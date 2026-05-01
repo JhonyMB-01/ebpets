@@ -1,0 +1,35 @@
+package org.ebpts.entity;
+
+
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "usuarios")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UsuarioEntity extends PanacheEntityBase {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 150)
+    public String nombre;
+
+    @Column(nullable = false, unique = true, length = 50)
+    public String username;
+
+    @Column(name = "password_hash", nullable = false)
+    public String passwordHash;
+
+    @ManyToOne
+    @JoinColumn(name = "id_rol", nullable = false)
+    public RolEntity rol;
+
+}
