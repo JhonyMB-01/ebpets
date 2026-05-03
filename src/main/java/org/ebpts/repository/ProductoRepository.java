@@ -6,4 +6,9 @@ import org.ebpts.entity.ProductoEntity;
 
 @ApplicationScoped
 public class ProductoRepository implements PanacheRepository<ProductoEntity> {
+
+    public boolean existsByCodigo(String codigo) {
+        return count("codigo", codigo) > 0;
+    }
+
 }

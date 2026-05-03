@@ -1,10 +1,17 @@
 package org.ebpts.service;
 
-import org.ebpts.dto.ProductoDto;
+import org.ebpts.dto.request.ProductoRequestDTO;
+import org.ebpts.dto.response.ProductoResponseDTO;
 
 import java.util.List;
 
 public interface ProductoService {
 
-    List<ProductoDto> getAllProductos();
+    List<ProductoResponseDTO> getAllProductos();
+
+    ProductoResponseDTO saveProducto(ProductoRequestDTO requestDTO);
+
+    ProductoResponseDTO updateProducto(Long id, ProductoRequestDTO requestDTO);
+
+    void updateEstado(Long id, Boolean activo);
 }

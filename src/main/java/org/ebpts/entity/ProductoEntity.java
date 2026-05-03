@@ -1,10 +1,10 @@
 package org.ebpts.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "productos")
@@ -13,17 +13,33 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProductoEntity extends PanacheEntity {
+public class ProductoEntity extends PanacheEntityBase {
 
-    @Column(nullable = false, unique = true)
-    public String codigo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "nombre", nullable = false)
-    public String nombre;
+    @Column(name = "codigo", nullable = false, unique = true, length = 50)
+    private String codigo;
+
+    @Column(name = "nombre", nullable = false, length = 150)
+    private String nombre;
+
+    @ManyToOne
+    @JoinColumn(name = "id_categoria", nullable = false)
+    private CategoriaEntity categoria;
+
+    @ManyToOne
+    @JoinColumn(name = "id_marca", nullable = false)
+    private MarcaEntity marca;
 
     @Column(name = "precio_venta", nullable = false)
-    public Double precioVenta;
+    private BigDecimal precioVenta;
 
-    @Column(name = "afecta_igv", nullable = false)
-    public Boolean afectaIgv;
+    @Column(name = "afecta_igv")
+    private Boolean afectaIgv = true;
+
+    @Column(name = "activo")
+    private Boolean activo = true;
+
 }

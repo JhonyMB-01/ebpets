@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 
 @Data
-public class CategoriaRequestDTO {
+public class    CategoriaRequestDTO {
 
     private String nombre;
     private String descripcion;
