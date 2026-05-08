@@ -14,4 +14,6 @@ public interface ProveedorService {
     ProveedorResponseDTO updateProveedor(Long idProveedor, ProveedorRequestDTO requestDTO);
 
     void deleteProveedor(Long idProveedor);
+
+    ProveedorResponseDTO getProveedorById(Long idProveedor);
 }

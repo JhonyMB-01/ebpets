@@ -36,6 +36,15 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     }
 
+    @Override
+    public CategoriaResponseDTO obtenerCategoriaById(Long id) {
+        CategoriaEntity categoria = repository.findById(id);
+        if (categoria == null) {
+            throw new NotFoundException("Categoría no encontrada");
+        }
+        return mapper.toDTO(categoria);
+    }
+
     @Transactional
     @Override
     public CategoriaResponseDTO updateCategory(Long id, CategoriaRequestDTO request) {

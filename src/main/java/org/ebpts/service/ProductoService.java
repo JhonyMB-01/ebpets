@@ -13,5 +13,7 @@ public interface ProductoService {
 
     ProductoResponseDTO updateProducto(Long id, ProductoRequestDTO requestDTO);
 
+    ProductoResponseDTO getProductoById(Long id);
+
     void updateEstado(Long id, Boolean activo);
 }

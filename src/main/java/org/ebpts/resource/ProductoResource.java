@@ -51,4 +51,12 @@ public class ProductoResource {
         return Response.noContent().build();
     }
 
+
+    @GET
+    @Path("/{id}")
+    public ProductoResponseDTO obtenerPorId(@PathParam("id") Long id) {
+        return service.getProductoById(id);
+    }
+
+
 }

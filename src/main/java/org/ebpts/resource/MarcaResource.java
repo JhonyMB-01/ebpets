@@ -25,6 +25,12 @@ public class MarcaResource {
         return service.getAllMarca();
     }
 
+    @GET
+    @Path("{id}")
+    public MarcaResponseDTO listarById(@PathParam("id") Long id) {
+        return service.getMarcaById(id);
+    }
+
     @POST
     public Response crear(MarcaRequestDTO dto) {
         return Response

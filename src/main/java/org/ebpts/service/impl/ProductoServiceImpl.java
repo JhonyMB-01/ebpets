@@ -98,6 +98,15 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
+    public ProductoResponseDTO getProductoById(Long id) {
+        ProductoEntity producto = productoRepository.findById(id);
+        if (producto == null) {
+            throw new NotFoundException("Producto no encontrado");
+        }
+        return productoMapper.toDTO(producto);
+    }
+
+    @Override
     @Transactional
     public void updateEstado(Long id, Boolean activo) {
 

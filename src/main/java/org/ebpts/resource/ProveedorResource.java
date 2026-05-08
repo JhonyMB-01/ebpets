@@ -30,6 +30,12 @@ public class ProveedorResource {
         return Response.ok(lista).build();
     }
 
+    @GET
+    @Path("{id}")
+    public ProveedorResponseDTO getProveedorById(@PathParam("id") Long id) {
+        return service.getProveedorById(id);
+    }
+
     @POST
     public Response crear(ProveedorRequestDTO dto) {
         return Response

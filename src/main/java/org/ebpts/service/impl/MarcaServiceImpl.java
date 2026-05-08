@@ -55,4 +55,9 @@ public class MarcaServiceImpl  implements MarcaService {
             throw new NotFoundException(MARCA_NOT_FOUND);
         }
     }
+
+    @Override
+    public MarcaResponseDTO getMarcaById(Long id) {
+        return marcaMapper.toDTO(marcaRepository.findById(id));
+    }
 }

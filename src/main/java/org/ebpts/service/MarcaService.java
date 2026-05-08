@@ -14,4 +14,7 @@ public interface MarcaService {
     MarcaResponseDTO updateMarca(Long id, MarcaRequestDTO marcaRequestDTO);
 
     void deleteMarca(Long id);
+
+    MarcaResponseDTO getMarcaById(Long id);
+
 }

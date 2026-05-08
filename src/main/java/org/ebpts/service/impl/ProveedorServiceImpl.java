@@ -57,4 +57,9 @@ public class ProveedorServiceImpl implements ProveedorService {
             throw new NotFoundException("Provvedor no encontrado");
         }
     }
+
+    @Override
+    public ProveedorResponseDTO getProveedorById(Long idProveedor) {
+        return mapper.toDTO(repository.findById(idProveedor));
+    }
 }

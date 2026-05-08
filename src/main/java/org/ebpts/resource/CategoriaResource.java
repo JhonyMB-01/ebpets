@@ -25,6 +25,12 @@ public class CategoriaResource {
         return service.getAllCategoria();
     }
 
+    @GET
+    @Path("{id}")
+    public CategoriaResponseDTO ObtenerById(Long id) {
+        return service.obtenerCategoriaById(id);
+    }
+
 
     @POST
     public Response crear(CategoriaRequestDTO dto) {
@@ -40,7 +46,6 @@ public class CategoriaResource {
     public CategoriaResponseDTO actualizar(@PathParam("id") Long id, CategoriaRequestDTO dto) {
         return service.updateCategory(id, dto);
     }
-
 
     @DELETE
     @Path("{id}")
