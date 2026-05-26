@@ -6,8 +6,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.BadRequestException;
 import org.ebpts.dto.ItemVentaDTO;
 import org.ebpts.dto.request.VentaRequestDTO;
+import org.ebpts.dto.response.VentaDetalleResponseDTO;
 import org.ebpts.dto.response.VentaResponseDTO;
 import org.ebpts.entity.*;
 import org.ebpts.exception.NotFoundException;
@@ -18,7 +20,9 @@ import org.ebpts.utils.EstadoVenta;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class VentaServiceImpl implements VentaService {
@@ -45,38 +49,45 @@ public class VentaServiceImpl implements VentaService {
     EntityManager entityManager;
 
 
-
     @Override
     @Transactional
-    public VentaResponseDTO saveVenta(VentaRequestDTO dto) {
+    public VentaResponseDTO saveVenta(VentaRequestDTO requestDTO) {
+
+        if (requestDTO.items == null || requestDTO.items.isEmpty()) {
+            throw new BadRequestException("La venta debe tener al menos un item");
+        }
 
         long userId = Long.parseLong(jwt.getClaim("userId").toString());
 
-        ClienteEntity cliente = clienteRepository.findById(dto.idCliente);
+        ClienteEntity cliente = clienteRepository.findById(requestDTO.idCliente);
         UsuarioEntity usuario = usuarioRepository.findById(userId);
 
         if (cliente == null || usuario == null) {
             throw new NotFoundException("Cliente o usuario no encontrado");
         }
 
+        // Crear cabecera de venta
         VentaEntity venta = new VentaEntity();
         venta.cliente = cliente;
         venta.usuario = usuario;
-        venta.metodoPago = dto.metodoPago;
-        venta.estado = EstadoVenta.PAGADO;
+        venta.metodoPago = requestDTO.metodoPago;
+        venta.estado = requestDTO.estadoVenta;
 
         venta.subtotal = BigDecimal.ZERO;
         venta.persist();
 
         BigDecimal subtotal = BigDecimal.ZERO;
 
-        for (ItemVentaDTO item : dto.items) {
+        // ITEM LOOP
+        for (ItemVentaDTO item : requestDTO.items) {
 
             InventarioEntity inventario = inventarioRepository.findById(item.getIdInventario());
+
             if (inventario == null) {
                 throw new NotFoundException("Inventario no encontrado");
             }
 
+            // cálculo total línea
             BigDecimal totalItem = item.getPrecioUnitario()
                     .multiply(BigDecimal.valueOf(item.getCantidad()))
                     .subtract(
@@ -97,17 +108,24 @@ public class VentaServiceImpl implements VentaService {
             detalleRepository.persist(detalle);
         }
 
+        // cálculo cabecera
         venta.subtotal = subtotal;
         venta.igv = subtotal.multiply(IGV);
         venta.total = venta.subtotal.add(venta.igv);
 
+        venta.persist();
+
+        // respuesta
         return mapper.toDTO(venta);
 
     }
 
     @Override
     public List<VentaResponseDTO> getAllVenta() {
-        if (securityIdentity.hasRole("ADMIN")) {
+        String query = "1=1";
+        Map<String, Object> params = new HashMap<>();
+
+        if (securityIdentity.hasRole("Administrador")) {
             return mapper.toDTOList(ventaRepository.listAll());
         }
 
@@ -138,10 +156,9 @@ public class VentaServiceImpl implements VentaService {
 
     }
 
-    @Override
+    /*@Override
     @Transactional
     public VentaResponseDTO registrarVentaPendiente(VentaRequestDTO dto) {
-
 
         long userId = Long.parseLong(jwt.getClaim("userId").toString());
         UsuarioEntity usuario = usuarioRepository.findById(userId);
@@ -190,34 +207,63 @@ public class VentaServiceImpl implements VentaService {
 
         return mapper.toDTO(venta);
 
-    }
+    }*/
 
     @Override
     @Transactional
-    public VentaResponseDTO confirmarPago(Long idVenta) {
+    public VentaResponseDTO confirmarVenta(Long idVenta) {
 
         VentaEntity venta = ventaRepository.findById(idVenta);
+
         if (venta == null) {
             throw new NotFoundException("Venta no encontrada");
         }
 
+        // validar estado actual
         if (venta.estado != EstadoVenta.PENDIENTE) {
             throw new IllegalStateException("La venta no está pendiente");
         }
 
-        // Reinsertamos los detalles para disparar el trigger de inventario
-        List<DetalleVentaEntity> detalles = detalleRepository
-                .find("venta.id", idVenta)
-                .list();
+        //seguridad JWT
+        /*boolean isAdmin = jwt.getGroups().contains("Administrador");
 
-        for (DetalleVentaEntity dv : detalles) {
-            // Forzamos actualización para que el trigger valide stock
-            entityManager.flush();
-        }
+        if (!isAdmin) {
+            String username = jwt.getName();
+
+            if (!venta.getUsuario().getUsername().equals(username)) {
+                throw new ForbiddenException("No autorizado");
+            }
+        }*/
 
         venta.estado = EstadoVenta.PAGADO;
+        venta.persist();
 
         return mapper.toDTO(venta);
+
+    }
+
+    @Override
+    public VentaDetalleResponseDTO obtenerDetalleVentaById(Long id) {
+
+        VentaEntity venta = ventaRepository.findByIdWithDetalles(id);
+
+        if (venta == null) {
+            throw new NotFoundException("Venta no encontrada");
+        }
+
+        // control por roles
+        boolean isAdmin = jwt.getGroups().contains("Administrador");
+
+        if (!isAdmin) {
+            String username = jwt.getName();
+
+            if (!venta.getUsuario().getUsername().equals(username)) {
+                throw new ForbiddenException("No autorizado");
+            }
+        }
+
+        return mapper.toVentaDetalleDTO(venta);
+
 
     }
 }

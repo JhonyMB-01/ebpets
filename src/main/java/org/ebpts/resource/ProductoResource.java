@@ -18,7 +18,6 @@ public class ProductoResource {
     @Inject
     ProductoService service;
 
-
     @GET
     public List<ProductoResponseDTO> listar() {
         return service.getAllProductos();

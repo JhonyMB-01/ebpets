@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "compras")
@@ -27,6 +28,9 @@ public class CompraEntity extends PanacheEntityBase {
     public BigDecimal total;
 
     public LocalDateTime fecha = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<DetalleCompraEntity> detalles;
 
 
 }

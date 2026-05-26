@@ -44,4 +44,18 @@ public class VentaRepository implements PanacheRepository<VentaEntity> {
         return find(query.toString(), params.toArray()).list();
     }
 
+
+    public VentaEntity findByIdWithDetalles(Long id) {
+
+        return find(
+                "SELECT v FROM VentaEntity v " +
+                        "LEFT JOIN FETCH v.detalles d " +
+                        "LEFT JOIN FETCH d.producto " +
+                        "LEFT JOIN FETCH d.inventario " +
+                        "WHERE v.id = ?1",
+                id
+        ).firstResult();
+    }
+
+
 }

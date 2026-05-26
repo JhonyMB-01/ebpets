@@ -9,6 +9,7 @@ import org.ebpts.utils.MetodoPago;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "ventas")
@@ -43,4 +44,8 @@ public class VentaEntity extends PanacheEntityBase {
     public EstadoVenta estado;
 
     public LocalDateTime fecha = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL)
+    public List<DetalleVentaEntity> detalles;
+
 }

@@ -19,7 +19,6 @@ public class CategoriaResource {
     @Inject
     CategoriaService service;
 
-
     @GET
     public List<CategoriaResponseDTO> listar() {
         return service.getAllCategoria();
@@ -31,7 +30,6 @@ public class CategoriaResource {
         return service.obtenerCategoriaById(id);
     }
 
-
     @POST
     public Response crear(CategoriaRequestDTO dto) {
         return Response
@@ -39,7 +37,6 @@ public class CategoriaResource {
                 .entity(service.createCategoria(dto))
                 .build();
     }
-
 
     @PUT
     @Path("{id}")

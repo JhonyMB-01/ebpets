@@ -6,17 +6,20 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 import org.ebpts.dto.ItemCompraDTO;
 import org.ebpts.dto.request.CompraRequestDTO;
+import org.ebpts.dto.response.CompraDetalleResponseDTO;
 import org.ebpts.dto.response.CompraResponseDTO;
 import org.ebpts.entity.CompraEntity;
 import org.ebpts.entity.DetalleCompraEntity;
 import org.ebpts.entity.ProductoEntity;
 import org.ebpts.entity.ProveedorEntity;
 import org.ebpts.mapper.CompraMapper;
+import org.ebpts.mapper.DetalleCompraMapper;
 import org.ebpts.repository.CompraRepository;
 import org.ebpts.repository.DetalleCompraRepository;
 import org.ebpts.repository.ProductoRepository;
 import org.ebpts.repository.ProveedorRepository;
 import org.ebpts.service.CompraService;
+import org.mapstruct.factory.Mappers;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -34,7 +37,8 @@ public class CompraServiceImpl implements CompraService {
     @Inject
     ProductoRepository productoRepository;
     @Inject
-    CompraMapper mapper;
+    CompraMapper compraMapper ;
+
 
     @Override
     @Transactional
@@ -76,21 +80,32 @@ public class CompraServiceImpl implements CompraService {
 
         compra.total = total;
 
-        return mapper.toDTO(compra);
+        return compraMapper.toDTO(compra);
 
     }
 
     @Override
     public List<CompraResponseDTO> getAllCompras() {
-        return mapper.toDTOList(compraRepository.listAll());
+
+        List<CompraEntity> compras = compraRepository.listAll();
+
+        return compras.stream()
+                .map(compraMapper::toDTO)
+                .toList();
+
+        //return mapper.toDTOList(compraRepository.listAll());
     }
 
     @Override
-    public CompraResponseDTO getByIdCompra(Long id) {
+    public CompraDetalleResponseDTO getByIdCompra(Long id) {
+
         CompraEntity compra = compraRepository.findById(id);
+
         if (compra == null) {
             throw new NotFoundException("Compra no encontrada");
         }
-        return mapper.toDTO(compra);
+
+
+        return compraMapper.toDetailResponse(compra);
     }
 }

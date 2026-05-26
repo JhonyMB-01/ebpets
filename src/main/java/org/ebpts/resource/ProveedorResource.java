@@ -44,13 +44,11 @@ public class ProveedorResource {
                 .build();
     }
 
-
     @PUT
     @Path("{id}")
     public ProveedorResponseDTO actualizar(@PathParam("id") Long id, ProveedorRequestDTO dto) {
         return service.updateProveedor(id, dto);
     }
-
 
     @DELETE
     @Path("{id}")

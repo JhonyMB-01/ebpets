@@ -1,10 +1,12 @@
 package org.ebpts.resource;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.ebpts.dto.request.CompraRequestDTO;
+import org.ebpts.dto.response.CompraDetalleResponseDTO;
 import org.ebpts.dto.response.CompraResponseDTO;
 import org.ebpts.service.CompraService;
 
@@ -13,7 +15,7 @@ import java.util.List;
 @Path("/api/compras")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-//@RolesAllowed("ADMIN")
+@RolesAllowed({ "Administrador"})
 public class CompraResource {
 
     @Inject
@@ -34,7 +36,7 @@ public class CompraResource {
 
     @GET
     @Path("{id}")
-    public CompraResponseDTO obtener(@PathParam("id") Long id) {
+    public CompraDetalleResponseDTO obtener(@PathParam("id") Long id) {
         return service.getByIdCompra(id);
     }
 }

@@ -1,6 +1,7 @@
 package org.ebpts.service;
 
 import org.ebpts.dto.request.VentaRequestDTO;
+import org.ebpts.dto.response.VentaDetalleResponseDTO;
 import org.ebpts.dto.response.VentaResponseDTO;
 
 import java.util.List;
@@ -13,7 +14,9 @@ public interface VentaService {
 
     VentaResponseDTO getVentaById(Long id);
 
-    VentaResponseDTO registrarVentaPendiente(VentaRequestDTO dto);
+    //VentaResponseDTO registrarVentaPendiente(VentaRequestDTO dto);
 
-    VentaResponseDTO confirmarPago(Long idVenta);
+    VentaResponseDTO confirmarVenta(Long idVenta);
+
+    VentaDetalleResponseDTO obtenerDetalleVentaById(Long id);
 }
