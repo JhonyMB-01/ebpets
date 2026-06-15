@@ -545,4 +545,8 @@ CALL registrar_venta(1, 1, 'EFECTIVO');
 
 select * from roles
 
+ALTER TABLE movimientos_inventario
+ADD COLUMN id_inventario INT,
+ADD FOREIGN KEY (id_inventario) REFERENCES inventario(id);
+
 

@@ -81,7 +81,8 @@ public class VentaServiceImpl implements VentaService {
         // ITEM LOOP
         for (ItemVentaDTO item : requestDTO.items) {
 
-            InventarioEntity inventario = inventarioRepository.findById(item.getIdInventario());
+            InventarioEntity inventario = inventarioRepository
+                    .findById(item.getIdInventario());
 
             if (inventario == null) {
                 throw new NotFoundException("Inventario no encontrado");
