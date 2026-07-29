@@ -34,7 +34,8 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public List<ProductoResponseDTO> getAllProductos() {
         return productoMapper.toDTOList(productoRepository
-                .find("activo = true").list());
+                .findAll().list());
+               // .find("activo = true").list());
     }
 
     @Override
@@ -91,6 +92,7 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setMarca(marca);
         producto.setPrecioVenta(dto.getPrecioVenta());
         producto.setAfectaIgv(dto.getAfectaIgv());
+        producto.setActivo(dto.getActivo() != null ? dto.getActivo() : producto.getActivo());
 
 
         return productoMapper.toDTO(producto);

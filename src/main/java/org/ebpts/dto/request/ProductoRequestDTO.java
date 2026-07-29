@@ -13,5 +13,6 @@ public class ProductoRequestDTO {
     private Long idMarca;
     private BigDecimal precioVenta;
     private Boolean afectaIgv;
+    private Boolean activo;
 }
 
