@@ -14,4 +14,5 @@ public class ProductoResponseDTO {
     public Boolean activo;
     private MarcaResponseDTO marca;
     private CategoriaResponseDTO categoria;
+    private Boolean tieneInventario;
 }

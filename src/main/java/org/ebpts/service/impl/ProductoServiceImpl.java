@@ -122,4 +122,12 @@ public class ProductoServiceImpl implements ProductoService {
 
     }
 
+    @Override
+    public List<ProductoResponseDTO> getProductosConStock() {
+        return productoMapper.toDTOList(productoRepository
+                .findAll().list().stream().filter(
+                        p -> p.getInventarios() != null && !p.getInventarios().isEmpty()).toList());
+
+    }
+
 }

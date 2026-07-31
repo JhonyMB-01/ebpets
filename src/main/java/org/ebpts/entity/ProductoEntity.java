@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "productos")
@@ -41,5 +42,8 @@ public class ProductoEntity extends PanacheEntityBase {
 
     @Column(name = "activo")
     private Boolean activo = true;
+
+    @OneToMany(mappedBy = "producto")
+    private List<InventarioEntity> inventarios;
 
 }

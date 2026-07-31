@@ -57,5 +57,11 @@ public class ProductoResource {
         return service.getProductoById(id);
     }
 
+    @GET
+    @Path("/con-stock")
+    public List<ProductoResponseDTO> listarConStock() {
+        return service.getProductosConStock();
+    }
+
 
 }

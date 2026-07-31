@@ -16,4 +16,6 @@ public interface ProductoService {
     ProductoResponseDTO getProductoById(Long id);
 
     void updateEstado(Long id, Boolean activo);
+
+    List<ProductoResponseDTO> getProductosConStock();
 }
