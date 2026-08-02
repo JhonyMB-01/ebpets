@@ -123,9 +123,6 @@ public class VentaServiceImpl implements VentaService {
 
     @Override
     public List<VentaResponseDTO> getAllVenta() {
-        String query = "1=1";
-        Map<String, Object> params = new HashMap<>();
-
         if (securityIdentity.hasRole("Administrador")) {
             return mapper.toDTOList(ventaRepository.listAll());
         }
