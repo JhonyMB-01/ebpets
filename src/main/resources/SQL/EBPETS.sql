@@ -549,4 +549,11 @@ ALTER TABLE movimientos_inventario
 ADD COLUMN id_inventario INT,
 ADD FOREIGN KEY (id_inventario) REFERENCES inventario(id);
 
+ALTER TABLE usuarios
+ADD COLUMN activo BOOLEAN DEFAULT TRUE,
+ADD COLUMN email VARCHAR(100) UNIQUE;
+
+ALTER TABLE usuarios
+ADD COLUMN email VARCHAR(100) UNIQUE;
+
 

@@ -8,4 +8,6 @@ public class UsuarioRequestDTO {
     public String username;
     public String password;
     public Long idRol;
+    public Boolean activo;
+    public String email;
 }

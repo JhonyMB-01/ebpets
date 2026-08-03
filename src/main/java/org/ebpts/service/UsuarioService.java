@@ -9,4 +9,8 @@ public interface UsuarioService {
 
     UsuarioResponseDTO saveUsuario(UsuarioRequestDTO dto);
     List<UsuarioResponseDTO> listarUsaurio();
+    void updateEstado(Long id, Boolean activo);
+    UsuarioResponseDTO getUsuarioById(Long id);
+    UsuarioResponseDTO actualizarUsuario(Long id, UsuarioRequestDTO dto);
+    String recuperarContraseña(String username);
 }

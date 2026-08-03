@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "cdi")
 public interface UsuarioMapper {
 
-    @Mapping(source = "rol.nombre", target = "rol")
+    //@Mapping(source = "rol.nombre", target = "rol")
     UsuarioResponseDTO toDTO(UsuarioEntity entity);
 
 }

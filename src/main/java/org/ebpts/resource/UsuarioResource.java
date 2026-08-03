@@ -31,4 +31,30 @@ public class UsuarioResource {
                 .build();
     }
 
+    @PUT
+    @Path("{id}/estado")
+    public Response cambiarEstado(
+            @PathParam("id") Long id,
+            @QueryParam("activo") Boolean activo
+    ) {
+        usuarioService.updateEstado(id, activo);
+        return Response.noContent().build();
+    }
+
+    @GET
+    @Path("/{id}")
+    public UsuarioResponseDTO obtenerPorId(@PathParam("id") Long id) {
+        return usuarioService.getUsuarioById(id);
+    }
+
+    @PUT
+    @Path("{id}")
+    public UsuarioResponseDTO actualizar(
+            @PathParam("id") Long id,
+            UsuarioRequestDTO dto
+    ) {
+        return usuarioService.actualizarUsuario(id, dto);
+    }
+
+
 }

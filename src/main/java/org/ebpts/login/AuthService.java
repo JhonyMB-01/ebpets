@@ -27,6 +27,10 @@ public class AuthService {
             throw new IllegalArgumentException("Credenciales inválidas");
         }
 
+        if(!usuario.activo) {
+            throw new IllegalArgumentException("Usuario inactivo");
+        }
+
         String token = tokenService.generarToken(usuario);
 
         return new LoginResponseDTO(

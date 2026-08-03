@@ -11,4 +11,8 @@ public class UsuarioRepository implements PanacheRepository<UsuarioEntity> {
     public boolean existsByUsername(String username) {
         return count("username", username) > 0;
     }
+
+    public UsuarioEntity findByUsername(String username) {
+        return find("username", username).firstResult();
+    }
 }

@@ -30,8 +30,13 @@ public class UsuarioEntity extends PanacheEntityBase {
     @Column(name = "password_hash", nullable = false)
     public String passwordHash;
 
+    @Column(name = "activo")
+    public Boolean activo = true;
+
+    @Column(name = "email", unique = true)
+    public String email;
+
     @ManyToOne
     @JoinColumn(name = "id_rol", nullable = false)
     public RolEntity rol;
-
 }
